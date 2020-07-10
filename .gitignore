@@ -1,0 +1,6 @@
+figs/
+arc/arc-*.pt
+logs/
+__pycache__/
+.ipynb_checkpoints/
+*.egg-info/
