@@ -56,17 +56,17 @@ def main(mode: str, alg: str, num_steps: int, random_starts: bool, env: str, see
         env_params["visualize"] = mode == Mode.VIZ
 
     e = env_fns[env](**env_params)
-    fixed_start_env = env_fns[env](use_random_starting_pos=False, seed=seed)
 
     agent_fns = {Algs.HERSAC: HERSACAgent, Algs.PPO: PPOAgent, Algs.ARC: ARCTrainingAgent}
     agent_params = dict(env=e, verbose=1, rank=seed)
     agent = agent_fns[alg](**agent_params)
 
     if mode == Mode.TRAIN:
-        return agent.train(timesteps=num_steps, eval_env=fixed_start_env)
+        return agent.train(timesteps=num_steps)
     elif mode == Mode.VIZ:
         return viz(agent=agent, env=e)
     elif mode == Mode.EVAL:
+        fixed_start_env = env_fns[env](use_random_starting_pos=False, seed=seed)
         while True:
             evaluate(agent=agent, env=fixed_start_env, very_granular=True)
             input("Press any key to re-compute.")

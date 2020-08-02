@@ -197,9 +197,9 @@ class ARCTrainingAgent(Agent):
         obs = self._arc_env.enrich_obs(obs)
         return self._agent(obs)
 
-    def train(self, timesteps: int, eval_env: ISettableGoalEnv = None) -> None:
+    def train(self, timesteps: int) -> None:
         cb = TrainARCCallback(train_fn=self._train_arc, save_fn=self._save_arc, save_every_n_steps=timesteps//4)
-        self._agent.train(timesteps=timesteps, callbacks=[cb], eval_env=eval_env)
+        self._agent.train(timesteps=timesteps, callbacks=[cb])
         torch.save(self._phi.state_dict(), f"arc-{self._rank}.pt")
 
     def _sample_transitions(self) -> ObservationSeq:
